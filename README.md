@@ -1631,23 +1631,5 @@ A: No, uses public RPC endpoints by default. You can configure custom RPC if des
 - [JSONLint](https://jsonlint.com) - JSON validator
 - [web3.storage](https://web3.storage) - IPFS storage
 
-### Community
-- GitHub: [Report Issues](https://github.com/your-repo/issues)
-- Discord: [Join Community](https://discord.gg/your-server)
-- Twitter: [@YourProject](https://twitter.com/your-project)
-
----
-
-## License
-
-MIT License - see [LICENSE](../LICENSE) for details
-
----
-
-## Contributing
-
-Contributions welcome! Please see [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
-
----
 
 **Built with ❤️ for ISO 20022 compliance and blockchain immutability**
