@@ -1,17 +1,378 @@
-# Agent Anchoring for ISO 20022 Middleware
+# ISO 20022 Payments Middleware with x402 & Agent Anchoring
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-green.svg)]()
 
-> **Blockchain-based data anchoring for AI agents processing ISO 20022 payments**
+> **Production-ready middleware for ISO 20022 payment processing with blockchain anchoring, x402 micropayments, and autonomous AI agents**
 
-Enable autonomous agents to create immutable audit trails with automatic or manual anchoring on EVM-compatible chains (Ethereum, Base, Flare, Optimism).
+Transform blockchain transactions into compliant ISO 20022 XML messages with cryptographic evidence bundles anchored on EVM chains. Enable pay-per-use API access with USDC micropayments and deploy autonomous XMTP agents.
 
-**[Quick Start](#quick-start)** | **[UI Guide](#ui-usage)** | **[SDK Guide](#sdk-usage)** | **[Agent Integration](#ai-agent-integration)** | **[API Docs](#api-reference)**
+**[Quick Start](#quick-start)** | **[Core Features](#core-features)** | **[Projects](#project-management)** | **[Receipts](#receipt-verification)** | **[Dashboard](#dashboard--ui)** | **[API](#api-reference)** | **[SDK](#sdk-usage)** | **[Agents](#ai-agent-integration)**
 
 ---
 
-## What is Agent Anchoring?
+## Overview
+
+The ISO 20022 Middleware provides a complete solution for payment processing:
+
+### 🎯 Core Capabilities
+
+- **15 ISO 20022 Message Types**: pain.001, pain.002, pain.007, pain.008, pacs.002, pacs.004, pacs.007, pacs.008, pacs.009, camt.029, camt.052, camt.053, camt.054, camt.056, remt.001
+- **Multi-Chain Anchoring**: Evidence bundles anchored on Ethereum, Base, Flare, Optimism
+- **Project Isolation**: Multi-tenant support with Sign-In With Ethereum (SIWE) authentication
+- **Evidence Bundles**: Deterministic ZIP files with cryptographic signatures
+- **Real-Time Updates**: Server-Sent Events (SSE) for live receipt tracking
+- **TypeScript & Python SDKs**: Full-featured client libraries with contract ABIs
+
+### 💰 x402 Payment Protocol
+
+- **Micropayment API**: Pay-per-use endpoints with USDC on Base chain
+- **6 Premium Endpoints**: Verify bundles, generate statements, FX lookup, bulk operations
+- **Automatic Payments**: Transparent USDC handling via x402 protocol
+- **Revenue Analytics**: Track payments, usage, and revenue by endpoint
+
+### 🤖 Autonomous Agents
+
+- **XMTP Agent**: Natural language command processing via messaging
+- **Agent Management**: Full CRUD API + UI for managing autonomous agents
+- **Multi-Agent Support**: Run multiple agents per project with independent wallets
+- **Agent Anchoring**: Automatic or manual blockchain anchoring for agents
+
+---
+
+## Core Features
+# ISO 20022 Payments Middleware with x402 & Agent Anchoring
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-green.svg)]()
+
+> **Production-ready middleware for ISO 20022 payment processing with blockchain anchoring, x402 micropayments, and autonomous AI agents**
+
+Transform blockchain transactions into compliant ISO 20022 XML messages with cryptographic evidence bundles anchored on EVM chains. Enable pay-per-use API access with USDC micropayments and deploy autonomous XMTP agents.
+
+**[Quick Start](#quick-start)** | **[Core Features](#core-features)** | **[Projects](#project-management)** | **[Receipts](#receipt-verification)** | **[Dashboard](#dashboard--ui)** | **[API](#api-reference)** | **[SDK](#sdk-usage)** | **[Agents](#ai-agent-integration)**
+
+---
+
+## Overview
+
+The ISO 20022 Middleware provides a complete solution for payment processing:
+
+### 🎯 Core Capabilities
+
+- **15 ISO 20022 Message Types**: pain.001, pain.002, pain.007, pain.008, pacs.002, pacs.004, pacs.007, pacs.008, pacs.009, camt.029, camt.052, camt.053, camt.054, camt.056, remt.001
+- **Multi-Chain Anchoring**: Evidence bundles anchored on Ethereum, Base, Flare, Optimism
+- **Project Isolation**: Multi-tenant support with Sign-In With Ethereum (SIWE) authentication
+- **Evidence Bundles**: Deterministic ZIP files with cryptographic signatures
+- **Real-Time Updates**: Server-Sent Events (SSE) for live receipt tracking
+- **TypeScript & Python SDKs**: Full-featured client libraries with contract ABIs
+
+### 💰 x402 Payment Protocol
+
+- **Micropayment API**: Pay-per-use endpoints with USDC on Base chain
+- **6 Premium Endpoints**: Verify bundles, generate statements, FX lookup, bulk operations
+- **Automatic Payments**: Transparent USDC handling via x402 protocol
+- **Revenue Analytics**: Track payments, usage, and revenue by endpoint
+
+### 🤖 Autonomous Agents
+
+- **XMTP Agent**: Natural language command processing via messaging
+- **Agent Management**: Full CRUD API + UI for managing autonomous agents
+- **Multi-Agent Support**: Run multiple agents per project with independent wallets
+- **Agent Anchoring**: Automatic or manual blockchain anchoring for agents
+
+---
+
+## Quick Start
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/alfre97x/middleware-ISO-and-x402.git
+cd middleware-ISO-and-x402
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Run database migrations
+alembic upgrade head
+
+# Start API server
+uvicorn app.main:app --reload --port 8000
+
+# In a new terminal, start UI
+cd web-alt
+npm install
+npm run dev
+```
+
+Access the dashboard at: **http://localhost:3000**
+
+---
+
+## Core Features
+
+### 1. Project Management
+
+Create isolated projects for multi-tenant deployments with independent configurations.
+
+#### Using the UI
+
+1. **Navigate to**: `http://localhost:3000`
+2. **Connect Wallet**: Click "Connect Wallet" → Sign with MetaMask
+3. **Create Project**:
+   - Enter project name
+   - Click "Create Project"
+   - Project becomes active automatically
+
+4. **Configure Project**:
+   - Go to "Settings" tab
+   - Set anchoring preferences:
+     - **Platform Mode**: Middleware handles anchoring
+     - **Tenant Mode**: You handle anchoring with your wallet
+   - Save configuration
+
+#### Using the SDK
+
+```typescript
+import IsoMiddlewareClient from 'iso-middleware-sdk';
+
+const client = new IsoMiddlewareClient({ 
+  baseUrl: 'http://localhost:8000' 
+});
+
+// Create project (requires SIWE authentication)
+const project = await client.createProject({
+  name: 'My Payment Project',
+  config: {
+    anchoring: {
+      execution_mode: 'platform', // or 'tenant'
+      chains: [
+        { name: 'flare', contract: '0x...', rpc_url: 'https://...' }
+      ]
+    }
+  }
+});
+
+// Get project details
+const details = await client.getProjectConfig(project.id);
+```
+
+#### Using the API
+
+```bash
+# Create project
+curl -X POST http://localhost:8000/v1/projects \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <siwe_token>" \
+  -d '{
+    "name": "My Project",
+    "config": {
+      "anchoring": {
+        "execution_mode": "platform"
+      }
+    }
+  }'
+
+# List projects
+curl http://localhost:8000/v1/projects \
+  -H "Authorization: Bearer <siwe_token>"
+
+# Get project config
+curl http://localhost:8000/v1/projects/{project_id}/config \
+  -H "Authorization: Bearer <siwe_token>"
+```
+
+---
+
+### 2. Receipt Generation & Verification
+
+Generate ISO 20022 receipts from blockchain transactions and verify evidence bundles.
+
+#### Record a Transaction (Create Receipt)
+
+**Using the UI:**
+1. Navigate to **Home** (http://localhost:3000)
+2. Scroll to "Record Transaction" section
+3. Fill in details:
+   - Transaction hash
+   - Chain (flare, ethereum, base, etc.)
+   - Amount & currency
+   - Sender/receiver wallets
+   - Reference ID
+4. Click "Record Transaction"
+5. View real-time status updates
+
+**Using the SDK:**
+
+```typescript
+import IsoMiddlewareClient from 'iso-middleware-sdk';
+
+const client = new IsoMiddlewareClient({ baseUrl: 'http://localhost:8000' });
+
+// Record a tip transaction
+const receipt = await client.recordTip({
+  tip_tx_hash: '0xabc123...',
+  chain: 'flare',
+  amount: '100.50',
+  currency: 'FLR',
+  sender_wallet: '0xSender...',
+  receiver_wallet: '0xReceiver...',
+  reference: 'invoice-2026-001'
+});
+
+console.log('Receipt ID:', receipt.receipt_id);
+console.log('Status:', receipt.status);
+// Output: Status: pending → bundling → anchored
+```
+
+**Using the API:**
+
+```bash
+curl -X POST http://localhost:8000/v1/iso/record-tip \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tip_tx_hash": "0xabc123...",
+    "chain": "flare",
+    "amount": "100.50",
+    "currency": "FLR",
+    "sender_wallet": "0xSender...",
+    "receiver_wallet": "0xReceiver...",
+    "reference": "invoice-2026-001"
+  }'
+```
+
+#### Verify Evidence Bundle
+
+**Using the UI:**
+1. Navigate to **Operations** tab
+2. Click "Verify Bundle"
+3. Enter bundle URL or upload ZIP file
+4. View verification results:
+   - Bundle integrity
+   - Blockchain confirmations
+   - ISO message validation
+
+**Using the SDK:**
+
+```typescript
+// Verify by URL
+const result = await client.verifyBundle({
+  bundle_url: 'https://ipfs.io/ipfs/Qm...'
+});
+
+// Verify by hash
+const result = await client.verifyBundle({
+  bundle_hash: '0x1234...'
+});
+
+console.log('Valid:', result.valid);
+console.log('Chains:', result.chains);
+console.log('Messages:', result.iso_messages);
+```
+
+**Using the API:**
+
+```bash
+curl -X POST http://localhost:8000/v1/iso/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "bundle_url": "https://ipfs.io/ipfs/Qm..."
+  }'
+```
+
+#### List & View Receipts
+
+**Using the UI:**
+1. Navigate to **Home** tab
+2. View receipts table with:
+   - Reference ID
+   - Amount & currency
+   - Status (pending/bundling/anchored)
+   - Created date
+3. Click on receipt to view details
+4. Download evidence bundle or ISO messages
+
+**Using the SDK:**
+
+```typescript
+// List receipts with pagination
+const page = await client.listReceipts({
+  page: 1,
+  page_size: 20,
+  scope: 'mine' // or 'all' for admin
+});
+
+console.log('Total:', page.total);
+page.receipts.forEach(r => {
+  console.log(`${r.reference}: ${r.amount} ${r.currency} - ${r.status}`);
+});
+
+// Get specific receipt
+const receipt = await client.getReceipt('receipt-id');
+console.log('Bundle URL:', receipt.bundle_url);
+console.log('ISO Messages:', receipt.iso_messages);
+```
+
+---
+
+### 3. Dashboard & UI
+
+Full-featured Next.js dashboard for managing all operations.
+
+#### Main Pages
+
+**1. Home (`/`)**
+- Recent receipts table
+- Quick stats
+- Record new transaction
+- Real-time status updates via SSE
+
+**2. Operations (`/operations`)**
+- Verify evidence bundles
+- Generate statements
+- Bulk operations
+- FX rate lookups
+
+**3. Settings (`/settings`)**
+- Project configuration
+- API key management
+- Anchoring settings
+- Network configuration
+
+**4. Agents (`/agents`)**
+- Create/manage XMTP agents
+- Configure AI settings
+- Set up automatic anchoring
+- View agent analytics
+
+#### Using the Dashboard
+
+**Connect Wallet:**
+1. Click "Connect Wallet" (top-right)
+2. Sign message with MetaMask
+3. Session persists in httpOnly cookie
+
+**Create Receipt:**
+1. Go to Home page
+2. Fill transaction details
+3. Click "Record Transaction"
+4. Watch live updates (no polling needed)
+
+**Verify Bundle:**
+1. Go to Operations → Verify
+2. Paste bundle URL or upload ZIP
+3. View detailed validation results
+
+**Manage Projects:**
+1. Click project dropdown (top-right)
+2. Select or create project
+3. Configure in Settings tab
+
+---
+
+### 4. Agent Anchoring
 
 Agent Anchoring allows AI agents to automatically or manually anchor payment data to the blockchain, creating cryptographically verifiable audit trails. This is particularly useful for:
 
